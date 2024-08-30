@@ -1,0 +1,73 @@
+/* Estilos da Lista de Pokémon */
+.pokemons {
+    list-style: none; /* Remove pontos de lista */
+    padding: 0; /* Remove espaçamento interno */
+    margin: 0; /* Remove margem */
+    display: flex; /* Usar flexbox */
+    flex-wrap: wrap; /* Permitir quebra de linha */
+    justify-content: space-between; /* Espaçar igualmente */
+}
+
+.pokemon {
+    border: 1px solid #ccc; /* Adiciona uma borda ao cartão */
+    border-radius: 8px; /* Bordas arredondadas */
+    padding: 10px;
+    margin: 10px; /* Espaçamento entre os cartões */
+    text-align: center; /* Centraliza o texto */
+    background-color: #f9f9f9; /* Cor de fundo */
+    width: calc(30% - 20px); /* Define a largura para 3 cards */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para os cartões */
+    transition: transform 0.3s; /* Transição suave ao passar o mouse */
+    position: relative; /* Para o posicionamento das caixas */
+}
+
+.pokemon:hover {
+    transform: scale(1.05); /* Aumenta o tamanho ao passar o mouse */
+}
+
+.name-box {
+    background-color: #e0e0e0; /* Cor padrão */
+    padding: 8px; /* Aumentei o padding */
+    border-radius: 8px; /* Bordas arredondadas */
+    font-weight: bold; /* Texto em negrito */
+    margin-bottom: 5px; /* Espaçamento inferior */
+}
+
+.type-box {
+    padding: 8px; /* Aumenta o padding */
+    border-radius: 4px; /* Bordas arredondadas */
+    margin-bottom: 5px; /* Espaçamento inferior */
+    text-align: center; /* Centraliza o texto */
+    font-weight: bold; /* Negrito */
+}
+
+/* Classes para cada tipo */
+.type.fire {
+    background-color: #FBAE24; /* Fundo para tipo fogo */
+    color: white; /* Texto branco */
+}
+
+.type.water {
+    background-color: #03A9F4; /* Fundo para tipo água */
+    color: white; /* Texto branco */
+}
+
+.type.grass {
+    background-color: #4CAF50; /* Fundo para tipo grama */
+    color: white; /* Texto branco */
+}
+
+.type.normal {
+    background-color: #A8A878; /* Fundo para tipo normal */
+    color: white; /* Texto branco */
+}
+
+.type.flying {
+    background-color: #A7B8D8; /* Fundo para tipo voador */
+    color: white; /* Texto branco */
+}
+
+img {
+    max-width: 100%; /* Imagem responsiva */
+    height: auto; /* Altura automática */
+}

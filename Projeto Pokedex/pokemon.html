@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Pokémon</title>
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/pokemon.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e0f7fa;
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 350px;
+            text-align: center;
+            position: relative;
+        }
+        .pokemon-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #004d40;
+            margin-bottom: 10px;
+        }
+        img {
+            max-width: 80%;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+        .type {
+            margin: 5px 0;
+            font-weight: bold;
+            color: #00796b;
+        }
+        .abilities {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .progress-section {
+            margin: 15px 0;
+            text-align: left;
+            padding: 0 10px;
+        }
+        .progress-bar-container {
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            height: 20px; 
+            overflow: hidden; /* Garante que a barra não extrapole */
+        }
+        .progress-bar {
+            height: 100%; /* Faz a barra usar toda a altura do contêiner */
+            border-radius: 10px;
+            background-color: #76c7c0;
+            transition: width 0.5s;
+        }
+        .stats {
+            text-align: left;
+            display: grid;
+            grid-template-columns: auto auto;
+            gap: 5px;
+            padding-top: 10px;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 class="pokemon-name" id="pokemonName"></h1>
+        <img id="pokemonPhoto" alt="Pokémon Image" />
+        <div class="type" id="pokemonType"></div>
+        <div class="abilities" id="pokemonAbilities"></div>
+
+        <div class="progress-section">
+            <p>HP</p>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="hpBar" style="width: 0;"></div>
+            </div>
+
+            <p>Ataque</p>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="attackBar" style="width: 0;"></div>
+            </div>
+        </div>
+
+        <div class="stats" id="pokemonStats"></div>
+        
+        <div class="footer">Pokémon API</div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const pokemonId = urlParams.get('id');
+
+        // Valores médios para HP e Ataque
+        const averageHP = 60; // Média de HP em Pokémon
+        const averageAttack = 65; // Média de Ataque em Pokémon
+
+        async function fetchPokemonDetails(id) {
+            try {
+                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+                if (!response.ok) throw new Error('Pokémon não encontrado');
+                const pokeDetail = await response.json();
+                return {
+                    name: pokeDetail.name,
+                    types: pokeDetail.types.map(typeSlot => typeSlot.type.name).join(', '),
+                    photo: pokeDetail.sprites.other.dream_world.front_default,
+                    abilities: pokeDetail.abilities.map(abilitySlot => abilitySlot.ability.name).join(', '),
+                    stats: pokeDetail.stats.reduce((acc, stat) => {
+                        acc[stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1)] = stat.base_stat; // Capitaliza o nome do stat
+                        return acc;
+                    }, {})
+                };
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        fetchPokemonDetails(pokemonId).then(pokemon => {
+            document.getElementById('pokemonName').innerText = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
+            document.getElementById('pokemonPhoto').src = pokemon.photo;
+            document.getElementById('pokemonPhoto').alt = pokemon.name;
+            document.getElementById('pokemonType').innerText = `Tipos: ${pokemon.types}`;
+            document.getElementById('pokemonAbilities').innerText = `Habilidades: ${pokemon.abilities}`;
+
+            const statsHTML = Object.entries(pokemon.stats)
+                .map(([key, value]) => `<p>${key}: ${value}</p>`)
+                .join('');
+
+            document.getElementById('pokemonStats').innerHTML = statsHTML;
+
+            // Atualiza as barras de HP e Ataque
+            const hpPercentage = (pokemon.stats.Hp / averageHP) * 100;
+            const attackPercentage = (pokemon.stats.Attack / averageAttack) * 100;
+
+            document.getElementById('hpBar').style.width = `${hpPercentage}%`;
+            document.getElementById('attackBar').style.width = `${attackPercentage}%`;
+        }).catch(err => {
+            document.getElementById('pokemonName').innerText = 'Pokémon não encontrado';
+            document.getElementById('pokemonType').innerText = '';
+            document.getElementById('pokemonAbilities').innerText = '';
+            document.getElementById('pokemonStats').innerHTML = `<p class="error">${err.message}</p>`;
+        });
+    </script>
+</body>
+</html>

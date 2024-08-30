@@ -1,0 +1,37 @@
+/* Estilos Globais */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.content {
+    max-width: 800px; /* Largura máxima para a seção de conteúdo */
+    margin: 0 auto; /* Centralizar */
+    padding: 20px; /* Espaçamento interno */
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #2E7D32; /* Cor verde */
+}
+
+/* Botão de Carregar Mais */
+#loadMoreButton {
+    background-color: #4CAF50; /* Verde */
+    color: white; /* Texto branco */
+    border: none; /* Sem borda */
+    border-radius: 5px; /* Bordas arredondadas */
+    padding: 10px 20px; /* Espaçamento interno */
+    cursor: pointer; /* Cursor de mão ao passar o mouse */
+    font-size: 1em; /* Tamanho do texto */
+    transition: background-color 0.3s; /* Transição suave da cor de fundo */
+}
+
+#loadMoreButton:hover {
+    background-color: #45A049; /* Verde mais escuro ao passar o mouse */
+}
